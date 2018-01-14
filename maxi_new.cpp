@@ -18,7 +18,6 @@
 #define RX_BASE_ADDR 0x12000000
 #define BG_MODEL 0x14000000
 #define DDR_RANGE 0x01000000
-#define RX_BASE_ADDR 0x02000000
 
 #define AXILITES_BASEADDR 0x43C00000
 #define CRTL_BUS_BASEADDR 0x43C10000
@@ -123,17 +122,17 @@ void backsub_rel(XBgsub * backsub_ptr){
 }
 
 void backsub_config(bool ini) {
-    XBacksub_Set_frame_in(&backsub,(u32)TX_BASE_ADDR);
-    XBacksub_Set_frame_out(&backsub,(u32)RX_BASE_ADDR);
-    XBacksub_Set_init(&backsub, ini);
-    XBacksub_Set_bgmodel(&backsub, (u32)BG_MODEL);
+    XBgsub_Set_frame_in(&backsub,(u32)TX_BASE_ADDR);
+    XBgsub_Set_frame_out(&backsub,(u32)RX_BASE_ADDR);
+    XBgsub_Set_init(&backsub, ini);
+    XBgsub_Set_bgmodel(&backsub, (u32)BG_MODEL);
 }
 
 void print_config() {
-    printf("Is Ready = %d \n", XBacksub_IsReady(&backsub));
-    printf("Frame in = %X \n", XBacksub_Get_frame_in(&backsub));
-    printf("Frame out = %X \n", XBacksub_Get_frame_out(&backsub));
-    printf("Init = %d \n", XBacksub_Get_init(&backsub));
+    printf("Is Ready = %d \n", XBgsub_IsReady(&backsub));
+    printf("Frame in = %X \n", XBgsub_Get_frame_in(&backsub));
+    printf("Frame out = %X \n", XBgsub_Get_frame_out(&backsub));
+    printf("Init = %d \n", XBgsub_Get_init(&backsub));
 }
 
 
@@ -257,9 +256,9 @@ int main(int argc, char *argv[]) {
 
         //auto begin2 = std::chrono::high_resolution_clock::now();
 
-        XBacksub_Start(&backsub);
+        XBgsub_Start(&backsub);
 
-        while(!XBacksub_IsDone(&backsub));
+        while(!XBgsub_IsDone(&backsub));
 
         auto end2 = std::chrono::high_resolution_clock::now();
 
@@ -281,8 +280,8 @@ int main(int argc, char *argv[]) {
                 if (det < len){
                     m_axi_bound0[0] = detections.at(det).x;
                     m_axi_bound0[1] = detections.at(det).y;
-                    m_axi_bound0[2] = detections.at(det).x + detections.at(k).width;
-                    m_axi_bound0[3] = detections.at(det).y + detections.at(k).height;
+                    m_axi_bound0[2] = detections.at(det).x + detections.at(det).width;
+                    m_axi_bound0[3] = detections.at(det).y + detections.at(det).height;
                     det++;
                     XFeature_Start(&feature0);
                     while(!XFeature_IsDone(&feature0));
@@ -293,8 +292,8 @@ int main(int argc, char *argv[]) {
                 if (det < len){
                     m_axi_bound1[0] = detections.at(det).x;
                     m_axi_bound1[1] = detections.at(det).y;
-                    m_axi_bound1[2] = detections.at(det).x + detections.at(k).width;
-                    m_axi_bound1[3] = detections.at(det).y + detections.at(k).height;
+                    m_axi_bound1[2] = detections.at(det).x + detections.at(det).width;
+                    m_axi_bound1[3] = detections.at(det).y + detections.at(det).height;
                     det++;
                     XFeature_Start(&feature1);
                     while(!XFeature_IsDone(&feature1));
@@ -305,8 +304,8 @@ int main(int argc, char *argv[]) {
                 if (det < len){
                     m_axi_bound2[0] = detections.at(det).x;
                     m_axi_bound2[1] = detections.at(det).y;
-                    m_axi_bound2[2] = detections.at(det).x + detections.at(k).width;
-                    m_axi_bound2[3] = detections.at(det).y + detections.at(k).height;
+                    m_axi_bound2[2] = detections.at(det).x + detections.at(det).width;
+                    m_axi_bound2[3] = detections.at(det).y + detections.at(det).height;
                     det++;
                     XFeature_Start(&feature2);
                     while(!XFeature_IsDone(&feature2));
