@@ -64,10 +64,10 @@ void backsub_config(bool ini) {
 
 
 void print_config() {
-    printf("Is Ready = %d \n", XBacksub_IsReady(&backsub));
-    printf("Frame in = %X \n", XBacksub_Get_frame_in(&backsub));
-    printf("Frame out = %X \n", XBacksub_Get_frame_out(&backsub));
-    printf("Init = %d \n", XBacksub_Get_init(&backsub));
+    printf("Is Ready = %d \n", XBgsub_IsReady(&backsub));
+    printf("Frame in = %X \n", XBgsub_Get_frame_in(&backsub));
+    printf("Frame out = %X \n", XBgsub_Get_frame_out(&backsub));
+    printf("Init = %d \n", XBgsub_Get_init(&backsub));
 }
 
 
