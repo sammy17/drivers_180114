@@ -96,14 +96,14 @@ void feature_config() {
     XFeature_Set_featureh(&feature0,(u32)M_AXI_FEATUREH_0);
     // }
     // else if (n==1){
-    XFeature_Set_frame_in(&feature1,(u32)RGB_TX_BASE_ADDR);
-    XFeature_Set_bounding(&feature1,(u32)M_AXI_BOUNDING_1);
-    XFeature_Set_featureh(&feature1,(u32)M_AXI_FEATUREH_1);
-    // }
-    // else if (n==2){
-    XFeature_Set_frame_in(&feature2,(u32)RGB_TX_BASE_ADDR);
-    XFeature_Set_bounding(&feature2,(u32)M_AXI_BOUNDING_2);
-    XFeature_Set_featureh(&feature2,(u32)M_AXI_FEATUREH_2);
+    // XFeature_Set_frame_in(&feature1,(u32)RGB_TX_BASE_ADDR);
+    // XFeature_Set_bounding(&feature1,(u32)M_AXI_BOUNDING_1);
+    // XFeature_Set_featureh(&feature1,(u32)M_AXI_FEATUREH_1);
+    // // }
+    // // else if (n==2){
+    // XFeature_Set_frame_in(&feature2,(u32)RGB_TX_BASE_ADDR);
+    // XFeature_Set_bounding(&feature2,(u32)M_AXI_BOUNDING_2);
+    // XFeature_Set_featureh(&feature2,(u32)M_AXI_FEATUREH_2);
     // }
 }
 
@@ -145,18 +145,18 @@ void signalHandler( int signum ) {
     //Release IP Core
     backsub_rel(&backsub);
     feature_rel(&feature0);
-    feature_rel(&feature1);
-    feature_rel(&feature2);
+    // feature_rel(&feature1);
+    // feature_rel(&feature2);
 
     munmap((void*)src, DDR_RANGE);
     munmap((void*)dst, DDR_RANGE);
     munmap((void*)rgb_src, DDR_RANGE);
     munmap((void*)m_axi_bound0, 8);
     munmap((void*)m_axi_feature0, 512*2);
-    munmap((void*)m_axi_bound1, 8);
-    munmap((void*)m_axi_feature1, 512*2);
-    munmap((void*)m_axi_bound2, 8);
-    munmap((void*)m_axi_feature2, 512*2);
+    // munmap((void*)m_axi_bound1, 8);
+    // munmap((void*)m_axi_feature1, 512*2);
+    // munmap((void*)m_axi_bound2, 8);
+    // munmap((void*)m_axi_feature2, 512*2);
 
     close(fdIP);
 
@@ -197,11 +197,11 @@ int main(int argc, char *argv[]) {
     m_axi_bound0 = (uint16_t*)mmap(NULL, 8,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_0);
     m_axi_feature0 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_0);
 
-    m_axi_bound1 = (uint16_t*)mmap(NULL, 8,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_1);
-    m_axi_feature1 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_1);
+    // m_axi_bound1 = (uint16_t*)mmap(NULL, 8,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_1);
+    // m_axi_feature1 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_1);
 
-    m_axi_bound2 = (uint16_t*)mmap(NULL, 8,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_2);
-    m_axi_feature2 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_2);
+    // m_axi_bound2 = (uint16_t*)mmap(NULL, 8,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_2);
+    // m_axi_feature2 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_2);
     printf("init begin\n");
 
     if(backsub_init(&backsub)==0) {
@@ -211,12 +211,12 @@ int main(int argc, char *argv[]) {
     if(feature_init(&feature0,0)==0) {
         printf("Feature 0 IP Core Initialized\n");
     }
-    if(feature_init(&feature1,1)==0) {
-        printf("Feature 1 IP Core Initialized\n");
-    }
-    if(feature_init(&feature2,2)==0) {
-        printf("Feature 2 IP Core Initialized\n");
-    }
+    // if(feature_init(&feature1,1)==0) {
+    //     printf("Feature 1 IP Core Initialized\n");
+    // }
+    // if(feature_init(&feature2,2)==0) {
+    //     printf("Feature 2 IP Core Initialized\n");
+    // }
     // Initializing IP Core Ends here .........................
 
     
@@ -273,8 +273,8 @@ int main(int argc, char *argv[]) {
             }
             int det =0;
             memset(m_axi_bound0,0,8); // initialize bounds to 0
-            memset(m_axi_bound1,0,8);
-            memset(m_axi_bound2,0,8);
+            // memset(m_axi_bound1,0,8);
+            // memset(m_axi_bound2,0,8);
             
             auto end3 = std::chrono::high_resolution_clock::now();
             while(true){
@@ -290,30 +290,30 @@ int main(int argc, char *argv[]) {
                 }else {
                     break;
                 }
-                if (det < len){
-                    m_axi_bound1[0] = detections.at(det).x;
-                    m_axi_bound1[1] = detections.at(det).y;
-                    m_axi_bound1[2] = detections.at(det).x + detections.at(det).width;
-                    m_axi_bound1[3] = detections.at(det).y + detections.at(det).height;
-                    det++;
-                    XFeature_Start(&feature1);
-                    while(!XFeature_IsDone(&feature1));
-                    memcpy(&m_axi_feature[512*det],m_axi_feature1,512*2);
-                }else {
-                    break;
-                }
-                if (det < len){
-                    m_axi_bound2[0] = detections.at(det).x;
-                    m_axi_bound2[1] = detections.at(det).y;
-                    m_axi_bound2[2] = detections.at(det).x + detections.at(det).width;
-                    m_axi_bound2[3] = detections.at(det).y + detections.at(det).height;
-                    det++;
-                    XFeature_Start(&feature2);
-                    while(!XFeature_IsDone(&feature2));
-                    memcpy(&m_axi_feature[512*det],m_axi_feature2,512*2);
-                }else {
-                    break;
-                }
+                // if (det < len){
+                //     m_axi_bound1[0] = detections.at(det).x;
+                //     m_axi_bound1[1] = detections.at(det).y;
+                //     m_axi_bound1[2] = detections.at(det).x + detections.at(det).width;
+                //     m_axi_bound1[3] = detections.at(det).y + detections.at(det).height;
+                //     det++;
+                //     XFeature_Start(&feature1);
+                //     while(!XFeature_IsDone(&feature1));
+                //     memcpy(&m_axi_feature[512*det],m_axi_feature1,512*2);
+                // }else {
+                //     break;
+                // }
+                // if (det < len){
+                //     m_axi_bound2[0] = detections.at(det).x;
+                //     m_axi_bound2[1] = detections.at(det).y;
+                //     m_axi_bound2[2] = detections.at(det).x + detections.at(det).width;
+                //     m_axi_bound2[3] = detections.at(det).y + detections.at(det).height;
+                //     det++;
+                //     XFeature_Start(&feature2);
+                //     while(!XFeature_IsDone(&feature2));
+                //     memcpy(&m_axi_feature[512*det],m_axi_feature2,512*2);
+                // }else {
+                //     break;
+                // }
 
             }
             //printf("Detection Length: %d",len);
@@ -377,18 +377,18 @@ int main(int argc, char *argv[]) {
     //Release IP Core
     backsub_rel(&backsub);
     feature_rel(&feature0);
-    feature_rel(&feature1);
-    feature_rel(&feature2);
+    // feature_rel(&feature1);
+    // feature_rel(&feature2);
 
     munmap((void*)src, DDR_RANGE);
     munmap((void*)dst, DDR_RANGE);
     munmap((void*)rgb_src, DDR_RANGE);
     munmap((void*)m_axi_bound0, 8);
     munmap((void*)m_axi_feature0, 512*2);
-    munmap((void*)m_axi_bound1, 8);
-    munmap((void*)m_axi_feature1, 512*2);
-    munmap((void*)m_axi_bound2, 8);
-    munmap((void*)m_axi_feature2, 512*2);
+    // munmap((void*)m_axi_bound1, 8);
+    // munmap((void*)m_axi_feature1, 512*2);
+    // munmap((void*)m_axi_bound2, 8);
+    // munmap((void*)m_axi_feature2, 512*2);
 
     close(fdIP);
      
