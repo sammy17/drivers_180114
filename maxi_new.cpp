@@ -151,11 +151,11 @@ void signalHandler( int signum ) {
     munmap((void*)src, DDR_RANGE);
     munmap((void*)dst, DDR_RANGE);
     munmap((void*)rgb_src, DDR_RANGE);
-    munmap((void*)m_axi_bound0, 2);
+    munmap((void*)m_axi_bound0, 8);
     munmap((void*)m_axi_feature0, 512*2);
-    munmap((void*)m_axi_bound1, 2);
+    munmap((void*)m_axi_bound1, 8);
     munmap((void*)m_axi_feature1, 512*2);
-    munmap((void*)m_axi_bound2, 2);
+    munmap((void*)m_axi_bound2, 8);
     munmap((void*)m_axi_feature2, 512*2);
 
     close(fdIP);
@@ -165,7 +165,7 @@ void signalHandler( int signum ) {
 
 
 int main(int argc, char *argv[]) {
-
+    printf("begin");
     signal(SIGINT, signalHandler);
 
     // Initialization communication link
@@ -188,21 +188,21 @@ int main(int argc, char *argv[]) {
     cap.set(CV_CAP_PROP_CONVERT_RGB,true);
    // cap.set(CV_CAP_PROP_AUTOFOCUS, 0);
 
-
+    printf("mmap begin\n");
     src = (uint8_t*)mmap(NULL, DDR_RANGE,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, TX_BASE_ADDR); 
     rgb_src = (uint8_t*)mmap(NULL, DDR_RANGE,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, RGB_TX_BASE_ADDR); 
     dst = (uint8_t*)mmap(NULL, DDR_RANGE,PROT_EXEC|PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, RX_BASE_ADDR); 
 
 
-    m_axi_bound0 = (uint16_t*)mmap(NULL, 80,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_0);
-    m_axi_feature0 = (uint16_t*)mmap(NULL, 5120*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_0);
+    m_axi_bound0 = (uint16_t*)mmap(NULL, 8,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_0);
+    m_axi_feature0 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_0);
 
-    m_axi_bound1 = (uint16_t*)mmap(NULL, 80,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_1);
-    m_axi_feature1 = (uint16_t*)mmap(NULL, 5120*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_1);
+    m_axi_bound1 = (uint16_t*)mmap(NULL, 8,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_1);
+    m_axi_feature1 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_1);
 
-    m_axi_bound2 = (uint16_t*)mmap(NULL, 80,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_2);
-    m_axi_feature2 = (uint16_t*)mmap(NULL, 5120*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_2);
-
+    m_axi_bound2 = (uint16_t*)mmap(NULL, 8,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_2);
+    m_axi_feature2 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_2);
+    printf("init begin\n");
 
     if(backsub_init(&backsub)==0) {
         printf("Backsub IP Core Initialized\n");
@@ -232,7 +232,7 @@ int main(int argc, char *argv[]) {
     bool isSecond = false;
     Mat img, grey;
 
-
+    feature_config();
     for (;;){
         // Queue the buffer
         //auto begin = std::chrono::high_resolution_clock::now();
@@ -249,6 +249,7 @@ int main(int argc, char *argv[]) {
 	auto begin = std::chrono::high_resolution_clock::now();
         cap>>img;
 	auto begin2 = std::chrono::high_resolution_clock::now();
+
 	if(!img.data) break;
         cv::cvtColor(img, grey, CV_BGR2GRAY);
         memcpy(rgb_src,img.data,76800*3);
@@ -271,10 +272,10 @@ int main(int argc, char *argv[]) {
                 len = 10;
             }
             int det =0;
-            memset(m_axi_bound0,0,2); // initialize bounds to 0
-            memset(m_axi_bound1,0,2);
-            memset(m_axi_bound2,0,2);
-            feature_config();
+            memset(m_axi_bound0,0,8); // initialize bounds to 0
+            memset(m_axi_bound1,0,8);
+            memset(m_axi_bound2,0,8);
+            
             auto end3 = std::chrono::high_resolution_clock::now();
             while(true){
                 if (det < len){
@@ -382,11 +383,11 @@ int main(int argc, char *argv[]) {
     munmap((void*)src, DDR_RANGE);
     munmap((void*)dst, DDR_RANGE);
     munmap((void*)rgb_src, DDR_RANGE);
-    munmap((void*)m_axi_bound0, 2);
+    munmap((void*)m_axi_bound0, 8);
     munmap((void*)m_axi_feature0, 512*2);
-    munmap((void*)m_axi_bound1, 2);
+    munmap((void*)m_axi_bound1, 8);
     munmap((void*)m_axi_feature1, 512*2);
-    munmap((void*)m_axi_bound2, 2);
+    munmap((void*)m_axi_bound2, 8);
     munmap((void*)m_axi_feature2, 512*2);
 
     close(fdIP);
