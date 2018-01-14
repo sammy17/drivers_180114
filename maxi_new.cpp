@@ -352,7 +352,7 @@ int main(int argc, char *argv[]) {
             frame.histograms.push_back(histogram);
         }
         frameNo++;
-        frame.setMask(detector->mask);
+        frame.setMask(detector.mask);
         frame.set_now();
         client.send(frame);
 
