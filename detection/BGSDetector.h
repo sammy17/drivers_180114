@@ -7,10 +7,13 @@
 
 #include <fstream>
 #include <opencv2/opencv.hpp>
+// #include <opencv2/bgsegm.hpp>
 #include "Detector.h"
 #include "Histogram.h"
 
 //#define BGS_DEBUG_MODE
+
+#define FRAME_WAIT 300
 
 class Blob
 {
@@ -30,7 +33,8 @@ public:
 enum
 {
     BGS_MOVING_AVERAGE=1,
-    BGS_GMM=2
+    BGS_GMM=2,
+    BGS_HW=3
 };
 
 struct DetectionRecord
@@ -49,18 +53,18 @@ public:
     std::vector<cv::Rect> detect(cv::Mat &img);
     vector<DetectionRecord> data;
     void trainDetector();
+    int method;
+    cv::Mat mask;
 
 private:
     void backgroundSubstraction(cv::Mat &frame0, cv::Mat &frame1, cv::Mat &frame2
             , cv::Mat &bgModel, cv::Mat &mask, double TH=15);
     cv::Mat frames[3];
     cv::Mat bgModel;
-    cv::Mat mask;
     uint8_t frameCount;
     double TH;
     // cv::Ptr<cv::BackgroundSubtractor> pMOG2; //MOG2 Background subtractor
     void GammaCorrection(cv::Mat& src, cv::Mat& dst, float fGamma);
-    int method;
     bool doGamaCorrection;
     string coeffFilePath;
     FileStorage coeffFile;
@@ -68,6 +72,8 @@ private:
     double coeff[64];
     PCA pca;
     float detectorTH=0;
+    Mat coeffMat;
+    int count;
 
 };
 

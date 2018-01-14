@@ -19,7 +19,7 @@ std::vector<cv::Rect> BGSDetector::detect(cv::Mat &img)
         // cv::GaussianBlur(imgCopy,imgCopy,cv::Size(3, 3), 0);
         // pMOG2->apply(imgCopy,mask);
     }
-    else
+    else if(method==BGS_MOVING_AVERAGE)
     {
         for(int i=2;i>0;i--)
         {
@@ -30,11 +30,17 @@ std::vector<cv::Rect> BGSDetector::detect(cv::Mat &img)
         if(frameCount<3)
         {
             frameCount++;
+            if(!mask.data)
+                mask = Mat::zeros(img.rows,img.cols,CV_8UC1);
             return detections;
         }
 
         backgroundSubstraction(frames[0],frames[1],frames[2],
                                bgModel,mask,TH);
+    }
+    else
+    {
+        mask = img.clone();
     }
 
 #ifdef BGS_DEBUG_MODE
@@ -95,15 +101,18 @@ std::vector<cv::Rect> BGSDetector::detect(cv::Mat &img)
 
         if(trainingMode)
         {
-            DetectionRecord dr;
-            memcpy(dr.data,record,8* sizeof(float));
-            data.push_back(dr);
-            found.push_back(possibleBlob.currentBoundingRect);
+            if(method!=BGS_HW || (method==BGS_HW && count>=FRAME_WAIT))
+            {
+                DetectionRecord dr;
+                memcpy(dr.data,record,8* sizeof(float));
+                data.push_back(dr);
+                found.push_back(possibleBlob.currentBoundingRect);
+            }
         }
         else
         {
             Mat x1(1,8,CV_32F,record);
-            Mat d = pca.project(x1);
+            Mat d = x1 * coeffMat.t();
             if(d.at<float>(0)>detectorTH)
                 found.push_back(possibleBlob.currentBoundingRect);
         }
@@ -125,6 +134,14 @@ std::vector<cv::Rect> BGSDetector::detect(cv::Mat &img)
             histograms.push_back(histogram);
         }
 
+    }
+
+    if(method==BGS_HW && count<FRAME_WAIT+1)
+    {
+        count++;
+        cout << "Training GMM: " << count << endl;
+        if(count>=1800)
+            cout << "GMM fully trained!" << endl;
     }
 
     return detections;
@@ -165,16 +182,18 @@ BGSDetector::BGSDetector(double TH,
 {
     frameCount = 0;
     // if(method==BGS_GMM)
-    //     // pMOG2 = cv::bgsegm::createBackgroundSubtractorMOG(200,
-    //                                                       6,
+    //     pMOG2 = cv::bgsegm::createBackgroundSubtractorMOG(200,
+    //                                                       2,
     //                                                       0.7,
     //                                                       0);
+    count = 0;
     if(!trainingMode)
     {
         coeffFile.open(coeffFilePath,FileStorage::READ);
         if(!coeffFile.isOpened())
             throw runtime_error("Unable to load pca coefficients.");
-        pca.read(coeffFile.root());
+        // pca.read(coeffFile.root());
+        coeffFile["vectors"] >> coeffMat;
         coeffFile["TH"] >> detectorTH;
     }
 
@@ -229,70 +248,70 @@ void BGSDetector::GammaCorrection(cv::Mat &src, cv::Mat &dst, float fGamma)
 
 void BGSDetector::trainDetector()
 {
-    if(!trainingMode)
-        throw runtime_error("Training is only available in training mode.");
-    Mat dataMat((int)data.size(),8,CV_32F);
-    for(int j=0;j<data.size();j++)
-    {
-        for(int k=0;k<8;k++)
-        {
-            dataMat.at<float>(j,k) = data[j].data[k];
-        }
-    }
-    pca = PCA(dataMat,Mat(),PCA::DATA_AS_ROW,1);
-    coeffFile.open(coeffFilePath,FileStorage::WRITE);
-    if(!coeffFile.isOpened())
-        throw runtime_error("Unable to open coefficient file.");
-    pca.write(coeffFile);
+    // if(!trainingMode)
+    //     throw runtime_error("Training is only available in training mode.");
+    // Mat dataMat((int)data.size(),8,CV_32F);
+    // for(int j=0;j<data.size();j++)
+    // {
+    //     for(int k=0;k<8;k++)
+    //     {
+    //         dataMat.at<float>(j,k) = data[j].data[k];
+    //     }
+    // }
+    // pca = PCA(dataMat,Mat(),PCA::DATA_AS_ROW,1);
+    // coeffFile.open(coeffFilePath,FileStorage::WRITE);
+    // if(!coeffFile.isOpened())
+    //     throw runtime_error("Unable to open coefficient file.");
+    // pca.write(coeffFile);
 
 
-    Mat matSrc = pca.project(dataMat);
-    double minVal,maxVal;
-    minMaxLoc(matSrc,&minVal,&maxVal);
+    // Mat matSrc = pca.project(dataMat);
+    // double minVal,maxVal;
+    // minMaxLoc(matSrc,&minVal,&maxVal);
 
-    int nHistSize = 65536;
-    float fRange[] = { (float)minVal, (float)maxVal};
-    float binSize = ((float)maxVal -  (float)minVal)/nHistSize;
-    const float* fHistRange = { fRange };
+    // int nHistSize = 65536;
+    // float fRange[] = { (float)minVal, (float)maxVal};
+    // float binSize = ((float)maxVal -  (float)minVal)/nHistSize;
+    // const float* fHistRange = { fRange };
 
-    Mat matHist;
-    calcHist(&matSrc, 1, 0, cv::Mat(), matHist, 1, &nHistSize, &fHistRange);
-    normalize(matHist,matHist,1,0,NORM_MINMAX);
+    // Mat matHist;
+    // calcHist(&matSrc, 1, 0, cv::Mat(), matHist, 1, &nHistSize, &fHistRange);
+    // normalize(matHist,matHist,1,0,NORM_MINMAX);
 
-    float total = 0.0;
-    float sumB = 0;
-    float wB = 0;
-    float maximum = 0.0;
-    float sum1 = 0;
-    float level;
-    for(int i=0;i<nHistSize;i++)
-    {
-        sum1 += (i*binSize+binSize/2+minVal)*matHist.at<float>(i);
-        total += matHist.at<float>(i);
-    }
+    // float total = 0.0;
+    // float sumB = 0;
+    // float wB = 0;
+    // float maximum = 0.0;
+    // float sum1 = 0;
+    // float level;
+    // for(int i=0;i<nHistSize;i++)
+    // {
+    //     sum1 += (i*binSize+binSize/2+minVal)*matHist.at<float>(i);
+    //     total += matHist.at<float>(i);
+    // }
 
-    for(int i=0;i<nHistSize;i++)
-    {
-        wB = wB + matHist.at<float>(i);
-        float wF = total - wB;
-        if (wB == 0 || wF == 0)
-            continue;
-        sumB = sumB + (float) (i*binSize+binSize/2+minVal) * matHist.at<float>(i);
-        float mF = (sum1 - sumB) / wF;
-        float  between = wB * wF * ((sumB / wB) - mF) * ((sumB / wB) - mF);
-        if ( between >= maximum )
-        {
-            level = (float)(i*binSize+binSize/2+minVal);
-            maximum = between;
-        }
+    // for(int i=0;i<nHistSize;i++)
+    // {
+    //     wB = wB + matHist.at<float>(i);
+    //     float wF = total - wB;
+    //     if (wB == 0 || wF == 0)
+    //         continue;
+    //     sumB = sumB + (float) (i*binSize+binSize/2+minVal) * matHist.at<float>(i);
+    //     float mF = (sum1 - sumB) / wF;
+    //     float  between = wB * wF * ((sumB / wB) - mF) * ((sumB / wB) - mF);
+    //     if ( between >= maximum )
+    //     {
+    //         level = (float)(i*binSize+binSize/2+minVal);
+    //         maximum = between;
+    //     }
 
-    }
+    // }
 
-    cout << "TH: " << level << endl;
+    // cout << "TH: " << level << endl;
 
-    coeffFile << "TH" << level;
+    // coeffFile << "TH" << level;
 
-    coeffFile.release();
+    // coeffFile.release();
 }
 
 Blob::Blob(std::vector<cv::Point> _contour)
