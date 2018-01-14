@@ -1,4 +1,4 @@
-#include "drivers/xbacksub.h"
+#include "drivers/xbgsub.h"
 #include "drivers/xfeature.h"
 
 #include "include/xparameters.h"
@@ -9,7 +9,7 @@
 
 // #include "detection/MyTypes.h"
 #include "detection/ClientUDP.h"
-#include "detection/MyTypes.h"
+// #include "detection/MyTypes.h"
 #include "detection/BGSDetector.h"
 #include <csignal>
 
@@ -65,10 +65,22 @@ uint16_t * m_axi_feature2;
 
 
 
-int feature_init(XFeature * ptr){
-    ptr->Axilites_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_FEATURE_0_S_AXI_AXILITES_BASEADDR);
-    ptr->Crtl_bus_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_FEATURE_0_S_AXI_CRTL_BUS_BASEADDR);
-    ptr->IsReady = XIL_COMPONENT_IS_READY;
+int feature_init(XFeature * ptr, int n){
+    if (n==0){
+        ptr->Axilites_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_FEATURE_0_S_AXI_AXILITES_BASEADDR);
+        ptr->Crtl_bus_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_FEATURE_0_S_AXI_CRTL_BUS_BASEADDR);
+        ptr->IsReady = XIL_COMPONENT_IS_READY;
+    }
+    else if (n==1){
+        ptr->Axilites_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_FEATURE_1_S_AXI_AXILITES_BASEADDR);
+        ptr->Crtl_bus_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_FEATURE_1_S_AXI_CRTL_BUS_BASEADDR);
+        ptr->IsReady = XIL_COMPONENT_IS_READY;
+    }
+    else if (n==2){
+        ptr->Axilites_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_FEATURE_2_S_AXI_AXILITES_BASEADDR);
+        ptr->Crtl_bus_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_FEATURE_2_S_AXI_CRTL_BUS_BASEADDR);
+        ptr->IsReady = XIL_COMPONENT_IS_READY;
+    }
     return 0;
 }
 
@@ -98,14 +110,14 @@ void feature_config() {
 
 
 
-int backsub_init(XBacksub * backsub_ptr){
-    backsub_ptr->Axilites_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_BACKSUB_0_S_AXI_AXILITES_BASEADDR);
-    backsub_ptr->Crtl_bus_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_XBACKSUB_0_S_AXI_CRTL_BUS_BASEADDR);
+int backsub_init(XBgsub * backsub_ptr){
+    backsub_ptr->Axilites_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_BGSUB_0_S_AXI_AXILITES_BASEADDR);
+    backsub_ptr->Crtl_bus_BaseAddress = (u32)mmap(NULL, AXILITE_RANGE, PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, XPAR_XBGSUB_0_S_AXI_CRTL_BUS_BASEADDR);
     backsub_ptr->IsReady = XIL_COMPONENT_IS_READY;
     return 0;
 }
 
-void backsub_rel(XBacksub * backsub_ptr){
+void backsub_rel(XBgsub * backsub_ptr){
     munmap((void*)backsub_ptr->Axilites_BaseAddress, AXILITE_RANGE);
     munmap((void*)backsub_ptr->Crtl_bus_BaseAddress, AXILITE_RANGE);
 }
@@ -197,13 +209,13 @@ int main(int argc, char *argv[]) {
         printf("Backsub IP Core Initialized\n");
     }
 
-    if(feature_init(&feature0)==0) {
+    if(feature_init(&feature0,0)==0) {
         printf("Feature 0 IP Core Initialized\n");
     }
-    if(feature_init(&feature1)==0) {
+    if(feature_init(&feature1,1)==0) {
         printf("Feature 1 IP Core Initialized\n");
     }
-    if(feature_init(&feature2)==0) {
+    if(feature_init(&feature2,2)==0) {
         printf("Feature 2 IP Core Initialized\n");
     }
     // Initializing IP Core Ends here .........................
