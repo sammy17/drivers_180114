@@ -282,7 +282,9 @@ printf("c7\n");
  printf("c8\n");           
             auto end3 = std::chrono::high_resolution_clock::now();
             while(true){
+                printf("c24\n"); 
                 if (det < len){
+                    printf("c34\n"); 
                     m_axi_bound0[0] = detections.at(det).x;
                     m_axi_bound0[1] = detections.at(det).y;
                     m_axi_bound0[2] = detections.at(det).x + detections.at(det).width;
