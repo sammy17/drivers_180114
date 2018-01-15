@@ -167,7 +167,6 @@ void signalHandler( int signum ) {
 
 
 int main(int argc, char *argv[]) {
-    printf("begin");
     signal(SIGINT, signalHandler);
 
     // Initialization communication link
@@ -190,7 +189,6 @@ int main(int argc, char *argv[]) {
     cap.set(CV_CAP_PROP_CONVERT_RGB,true);
    // cap.set(CV_CAP_PROP_AUTOFOCUS, 0);
 
-    printf("mmap begin\n");
     src = (uint8_t*)mmap(NULL, DDR_RANGE,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, TX_BASE_ADDR); 
     rgb_src = (uint8_t*)mmap(NULL, DDR_RANGE,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, RGB_TX_BASE_ADDR); 
     dst = (uint8_t*)mmap(NULL, DDR_RANGE,PROT_EXEC|PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, RX_BASE_ADDR); 
@@ -236,7 +234,6 @@ int main(int argc, char *argv[]) {
 
     feature_config();
     for (;;){
-        printf("loop begin\n");
         // Queue the buffer
         //auto begin = std::chrono::high_resolution_clock::now();
 
@@ -245,33 +242,26 @@ int main(int argc, char *argv[]) {
             isFirst = false;
             isSecond = true;
         }
-        printf("c1\n");
         if (isSecond){
             backsub_config(false);
             isSecond = false;
         }
-        printf("c2\n");
 	auto begin = std::chrono::high_resolution_clock::now();
         cap>>img;
 	auto begin2 = std::chrono::high_resolution_clock::now();
-    printf("c3\n");
 	if(!img.data) break;
         cv::cvtColor(img, grey, CV_BGR2GRAY);
         memcpy(rgb_src,img.data,76800*3);
         memcpy(src,grey.data,76800);
-printf("c4\n");
         //auto begin2 = std::chrono::high_resolution_clock::now();
 
         XBgsub_Start(&backsub);
-printf("c5\n");
         while(!XBgsub_IsDone(&backsub));
 
         auto end2 = std::chrono::high_resolution_clock::now();
-printf("c6\n");
         Mat mask = Mat(240, 320, CV_8UC1, dst); 
 
         std::vector<cv::Rect> detections = detector.detect(mask);
-printf("c7\n");
             int len = detections.size();
             if (len>10){
                 len = 10;
@@ -279,30 +269,22 @@ printf("c7\n");
             int det =0;
             memset(m_axi_bound0,0,8); // initialize bounds to 0
             // memset(m_axi_bound1,0,8);
-            // memset(m_axi_bound2,0,8);
- printf("c8\n");           
+            // memset(m_axi_bound2,0,8);         
             auto end3 = std::chrono::high_resolution_clock::now();
             while(true){
-                printf("c24\n"); 
                 if (det < len){
-                    printf("c34\n"); 
                     m_axi_bound0_sw[0] = detections.at(det).x;
                     m_axi_bound0_sw[1] = detections.at(det).y;
                     m_axi_bound0_sw[2] = detections.at(det).x + detections.at(det).width;
                     m_axi_bound0_sw[3] = detections.at(det).y + detections.at(det).height;
-                    printf("c44\n"); 
                     memcpy(m_axi_bound0, m_axi_bound0_sw, 8);
                     det++;
-                    printf("c54\n");
                     XFeature_Start(&feature0);
                     while(!XFeature_IsDone(&feature0));
-                    printf("c64\n");
                     memcpy(&m_axi_feature[512*det],m_axi_feature0,512*2);
-                    printf("%d\n",det);
                 }else {
                     break;
                 }
-                printf("c9\n");
                 // if (det < len){
                 //     m_axi_bound1[0] = detections.at(det).x;
                 //     m_axi_bound1[1] = detections.at(det).y;
@@ -369,7 +351,6 @@ printf("c7\n");
         frame.setMask(detector.mask);
         frame.set_now();
         client.send(frame);
-        printf("c9\n");
 
         // outFile.close();
         auto end = std::chrono::high_resolution_clock::now();
@@ -383,7 +364,7 @@ printf("c7\n");
 	printf("Elapsed time opencv  : %lld us\n",std::chrono::duration_cast<std::chrono::microseconds>(end3-end2).count());
 	printf("Elapsed time feature : %lld us\n",std::chrono::duration_cast<std::chrono::microseconds>(end4-end3).count());
 	printf("Elapsed time send    : %lld us\n",std::chrono::duration_cast<std::chrono::microseconds>(end-end4).count());
-	printf("Elapsed time tital   : %lld us\n",std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count());
+	printf("Elapsed time total   : %lld us\n",std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count());
     
 }
 
