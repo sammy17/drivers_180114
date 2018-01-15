@@ -68,6 +68,8 @@ void signalHandler( int signum ) {
 }
 
 
+uint16_t featureHist[512];
+
 
 int main(int argc, char *argv[]) {
 
@@ -98,6 +100,11 @@ int main(int argc, char *argv[]) {
     m_axi_bound0[2] = 128;
     m_axi_bound0[3] = 128;
 
+    for (int y=0;y<512;y++){
+		m_axi_feature0[y] = 0;
+		featureHist[y]= 0;
+	}
+
     XFeature_Start(&feature0);
     while(!XFeature_IsDone(&feature0));
 
@@ -106,7 +113,7 @@ int main(int argc, char *argv[]) {
     int index1 = 0;
 	int iterator = 0;
 
-	uint16_t featureHist[512];
+	
 
 	for (int i = 0; i < IMG_H; i++) {
 		for (int j = 0; j < IMG_W; j++) {
