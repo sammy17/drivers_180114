@@ -238,7 +238,7 @@ int main(int argc, char *argv[]) {
 
         backsub_config(isFirst);
         if(isFirst) isFirst = false;
-        
+
 	auto begin = std::chrono::high_resolution_clock::now();
         cap>>img;
 	auto begin2 = std::chrono::high_resolution_clock::now();
@@ -341,7 +341,7 @@ int main(int argc, char *argv[]) {
             frame.histograms.push_back(histogram);
         }
         frameNo++;
-        frame.setMask(grey);
+        frame.setMask(detector.mask);
         frame.set_now();
         client.send(frame);
 
