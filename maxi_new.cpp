@@ -244,23 +244,25 @@ int main(int argc, char *argv[]) {
             isFirst = false;
             isSecond = true;
         }
+        printf("c1\n");
         if (isSecond){
             backsub_config(false);
             isSecond = false;
         }
+        printf("c2\n");
 	auto begin = std::chrono::high_resolution_clock::now();
         cap>>img;
 	auto begin2 = std::chrono::high_resolution_clock::now();
-
+    printf("c3\n");
 	if(!img.data) break;
         cv::cvtColor(img, grey, CV_BGR2GRAY);
         memcpy(rgb_src,img.data,76800*3);
         memcpy(src,grey.data,76800);
-
+printf("c4\n");
         //auto begin2 = std::chrono::high_resolution_clock::now();
 
         XBgsub_Start(&backsub);
-
+printf("c5\n");
         while(!XBgsub_IsDone(&backsub));
 
         auto end2 = std::chrono::high_resolution_clock::now();

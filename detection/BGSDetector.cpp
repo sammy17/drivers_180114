@@ -101,13 +101,13 @@ std::vector<cv::Rect> BGSDetector::detect(cv::Mat &img)
 
         if(trainingMode)
         {
-            if(method!=BGS_HW || (method==BGS_HW && count>=FRAME_WAIT))
-            {
+        //     if(method!=BGS_HW || (method==BGS_HW && count>=FRAME_WAIT))
+        //     {
                 DetectionRecord dr;
                 memcpy(dr.data,record,8* sizeof(float));
                 data.push_back(dr);
                 found.push_back(possibleBlob.currentBoundingRect);
-            }
+            // }
         }
         else
         {
@@ -136,13 +136,13 @@ std::vector<cv::Rect> BGSDetector::detect(cv::Mat &img)
 
     }
 
-    if(method==BGS_HW && count<FRAME_WAIT+1)
-    {
-        count++;
-        cout << "Training GMM: " << count << endl;
-        if(count>=1800)
-            cout << "GMM fully trained!" << endl;
-    }
+    // if(method==BGS_HW && count<FRAME_WAIT+1)
+    // {
+    //     count++;
+    //     cout << "Training GMM: " << count << endl;
+    //     if(count>=1800)
+    //         cout << "GMM fully trained!" << endl;
+    // }
 
     return detections;
 }
@@ -196,6 +196,8 @@ BGSDetector::BGSDetector(double TH,
         coeffFile["vectors"] >> coeffMat;
         coeffFile["TH"] >> detectorTH;
     }
+
+    printf("Detector initializes!\n");
 
 }
 
