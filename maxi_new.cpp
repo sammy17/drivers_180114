@@ -61,6 +61,7 @@ uint16_t * m_axi_bound1;
 uint16_t * m_axi_feature1;
 uint16_t * m_axi_bound2;
 uint16_t * m_axi_feature2;
+uint16_t m_axi_bound0_sw[4];
 
 
 
@@ -285,10 +286,11 @@ printf("c7\n");
                 printf("c24\n"); 
                 if (det < len){
                     printf("c34\n"); 
-                    m_axi_bound0[0] = detections.at(det).x;
-                    m_axi_bound0[1] = detections.at(det).y;
-                    m_axi_bound0[2] = detections.at(det).x + detections.at(det).width;
-                    m_axi_bound0[3] = detections.at(det).y + detections.at(det).height;
+                    m_axi_bound0_sw[0] = detections.at(det).x;
+                    m_axi_bound0_sw[1] = detections.at(det).y;
+                    m_axi_bound0_sw[2] = detections.at(det).x + detections.at(det).width;
+                    m_axi_bound0_sw[3] = detections.at(det).y + detections.at(det).height;
+                    memcpy(m_axi_bound0, m_axi_bound0_sw, 8);
                     det++;
                     XFeature_Start(&feature0);
                     while(!XFeature_IsDone(&feature0));
