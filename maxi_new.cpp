@@ -290,10 +290,13 @@ printf("c7\n");
                     m_axi_bound0_sw[1] = detections.at(det).y;
                     m_axi_bound0_sw[2] = detections.at(det).x + detections.at(det).width;
                     m_axi_bound0_sw[3] = detections.at(det).y + detections.at(det).height;
+                    printf("c44\n"); 
                     memcpy(m_axi_bound0, m_axi_bound0_sw, 8);
                     det++;
+                    printf("c54\n");
                     XFeature_Start(&feature0);
                     while(!XFeature_IsDone(&feature0));
+                    printf("c64\n");
                     memcpy(&m_axi_feature[512*det],m_axi_feature0,512*2);
                     printf("%d\n",det);
                 }else {
