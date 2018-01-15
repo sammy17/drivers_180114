@@ -105,6 +105,7 @@ int main(int argc, char *argv[]) {
 		m_axi_feature0[y] = 0;
 		featureHist[y]= 0;
 	}
+    memcpy(m_axi_bound0,m_axi_bound0_sw,8);
 
     XFeature_Start(&feature0);
     while(!XFeature_IsDone(&feature0));
@@ -113,8 +114,6 @@ int main(int argc, char *argv[]) {
 
     int index1 = 0;
 	int iterator = 0;
-
-	memcpy(m_axi_bound0,m_axi_bound0_sw,8);
 
 	for (int i = 0; i < IMG_H; i++) {
 		for (int j = 0; j < IMG_W; j++) {
