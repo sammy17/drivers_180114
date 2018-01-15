@@ -204,12 +204,12 @@ int main(int argc, char *argv[]) {
     // m_axi_feature2 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_2);
     printf("init begin\n");
 
-    while(backsub_init(&backsub)!=0) {
-        printf("Backsub IP Core Initializing\n");
+    if(backsub_init(&backsub)==0) {
+        printf("Backsub IP Core Initialized!\n");
     }
 
-    while(feature_init(&feature0,0)!=0) {
-        printf("Feature 0 IP Core Initializing\n");
+    if(feature_init(&feature0,0)==0) {
+        printf("Feature 0 IP Core Initialized!\n");
     }
     // if(feature_init(&feature1,1)==0) {
     //     printf("Feature 1 IP Core Initialized\n");
