@@ -7,6 +7,9 @@
 #include <fstream>
 #include <iostream>
 
+#define IMG_H 240
+#define IMG_W 320
+
 #define M_AXI_BOUNDING_0 0x21000000
 #define M_AXI_FEATUREH_0 0x29000000
 
@@ -125,7 +128,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	for (int x = 0;x < 512; x++){
-		if (featureh[x] != featureHist[x]){
+		if (m_axi_feature0[x] != featureHist[x]){
 			printf("Mismatch %d, expected : %d, actual : %d\n",x,featureHist[x],m_axi_feature0[x]);
 		}
 	}
