@@ -342,20 +342,20 @@ printf("c5\n");
         frame.cameraID = cameraID;
         frame.detections.clear();
         frame.histograms.clear();
-        for(int q=0;q<len;q++)
-        {
-            BoundingBox bbox;
-            bbox.x = detections[q].x;
-            bbox.y = detections[q].y;
-            bbox.width = detections[q].width;
-            bbox.height = detections[q].height;
-            frame.detections.push_back(bbox);
+        // for(int q=0;q<len;q++)
+        // {
+        //     BoundingBox bbox;
+        //     bbox.x = detections[q].x;
+        //     bbox.y = detections[q].y;
+        //     bbox.width = detections[q].width;
+        //     bbox.height = detections[q].height;
+        //     frame.detections.push_back(bbox);
 
-            vector<uint16_t> histogram(512);
+        //     vector<uint16_t> histogram(512);
       
-            std::copy ( m_axi_feature+512*q, m_axi_feature+512*(q+1), histogram.begin() );
-            frame.histograms.push_back(histogram);
-        }
+        //     std::copy ( m_axi_feature+512*q, m_axi_feature+512*(q+1), histogram.begin() );
+        //     frame.histograms.push_back(histogram);
+        // }
         frameNo++;
         frame.setMask(detector.mask);
         frame.set_now();
