@@ -14,8 +14,8 @@ int XFeature_CfgInitialize(XFeature *InstancePtr, XFeature_Config *ConfigPtr) {
     Xil_AssertNonvoid(InstancePtr != NULL);
     Xil_AssertNonvoid(ConfigPtr != NULL);
 
-    InstancePtr->Crtl_bus_BaseAddress = ConfigPtr->Crtl_bus_BaseAddress;
     InstancePtr->Axilites_BaseAddress = ConfigPtr->Axilites_BaseAddress;
+    InstancePtr->Crtl_bus_BaseAddress = ConfigPtr->Crtl_bus_BaseAddress;
     InstancePtr->IsReady = XIL_COMPONENT_IS_READY;
 
     return XST_SUCCESS;
@@ -91,6 +91,23 @@ u32 XFeature_Get_frame_in(XFeature *InstancePtr) {
     Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
 
     Data = XFeature_ReadReg(InstancePtr->Axilites_BaseAddress, XFEATURE_AXILITES_ADDR_FRAME_IN_DATA);
+    return Data;
+}
+
+void XFeature_Set_mask_in(XFeature *InstancePtr, u32 Data) {
+    Xil_AssertVoid(InstancePtr != NULL);
+    Xil_AssertVoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    XFeature_WriteReg(InstancePtr->Axilites_BaseAddress, XFEATURE_AXILITES_ADDR_MASK_IN_DATA, Data);
+}
+
+u32 XFeature_Get_mask_in(XFeature *InstancePtr) {
+    u32 Data;
+
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    Data = XFeature_ReadReg(InstancePtr->Axilites_BaseAddress, XFEATURE_AXILITES_ADDR_MASK_IN_DATA);
     return Data;
 }
 

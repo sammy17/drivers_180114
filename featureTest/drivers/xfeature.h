@@ -40,14 +40,14 @@ typedef uint32_t u32;
 #else
 typedef struct {
     u16 DeviceId;
-    u32 Crtl_bus_BaseAddress;
     u32 Axilites_BaseAddress;
+    u32 Crtl_bus_BaseAddress;
 } XFeature_Config;
 #endif
 
 typedef struct {
-    u32 Crtl_bus_BaseAddress;
     u32 Axilites_BaseAddress;
+    u32 Crtl_bus_BaseAddress;
     u32 IsReady;
 } XFeature;
 
@@ -91,6 +91,8 @@ void XFeature_DisableAutoRestart(XFeature *InstancePtr);
 
 void XFeature_Set_frame_in(XFeature *InstancePtr, u32 Data);
 u32 XFeature_Get_frame_in(XFeature *InstancePtr);
+void XFeature_Set_mask_in(XFeature *InstancePtr, u32 Data);
+u32 XFeature_Get_mask_in(XFeature *InstancePtr);
 void XFeature_Set_bounding(XFeature *InstancePtr, u32 Data);
 u32 XFeature_Get_bounding(XFeature *InstancePtr);
 void XFeature_Set_featureh(XFeature *InstancePtr, u32 Data);
