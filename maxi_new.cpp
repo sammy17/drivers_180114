@@ -343,10 +343,11 @@ int main(int argc, char *argv[]) {
             bbox.height = detections[q].height;
             frame.detections.push_back(bbox);
 
-            vector<uint16_t> histogram(512);
+            // vector<uint16_t> histogram(512);
       
-            std::copy ( m_axi_feature+512*q, m_axi_feature+512*(q+1), histogram.begin() );
-            frame.histograms.push_back(histogram);
+            // std::copy ( m_axi_feature+512*q, m_axi_feature+512*(q+1), histogram.begin() );
+            // frame.histograms.push_back(histogram);
+            frame.histograms.push_back(detector.histograms[q]);
         }
         frameNo++;
         frame.setMask(detector.mask);
