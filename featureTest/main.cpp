@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
 		if (m_axi_feature0[x] != featureHist[x]){
 			printf("Mismatch %d, expected : %d, actual : %d\n",x,featureHist[x],m_axi_feature0[x]);
 		}
-        printf("Index X = %d : %d\n",x,featureHist[x]);
+        // printf("Index X = %d : %d\n",x,featureHist[x]);
 	}
 
     feature_rel(&feature0);
