@@ -266,11 +266,11 @@ printf("c5\n");
         while(!XBgsub_IsDone(&backsub));
 
         auto end2 = std::chrono::high_resolution_clock::now();
-
+printf("c6\n");
         Mat mask = Mat(240, 320, CV_8UC1, dst); 
 
         std::vector<cv::Rect> detections = detector.detect(mask);
-
+printf("c7\n");
             int len = detections.size();
             if (len>10){
                 len = 10;
@@ -279,7 +279,7 @@ printf("c5\n");
             memset(m_axi_bound0,0,8); // initialize bounds to 0
             // memset(m_axi_bound1,0,8);
             // memset(m_axi_bound2,0,8);
-            
+ printf("c8\n");           
             auto end3 = std::chrono::high_resolution_clock::now();
             while(true){
                 if (det < len){
@@ -291,9 +291,11 @@ printf("c5\n");
                     XFeature_Start(&feature0);
                     while(!XFeature_IsDone(&feature0));
                     memcpy(&m_axi_feature[512*det],m_axi_feature0,512*2);
+                    printf("%d\n",det);
                 }else {
                     break;
                 }
+                printf("c9\n");
                 // if (det < len){
                 //     m_axi_bound1[0] = detections.at(det).x;
                 //     m_axi_bound1[1] = detections.at(det).y;
@@ -342,24 +344,25 @@ printf("c5\n");
         frame.cameraID = cameraID;
         frame.detections.clear();
         frame.histograms.clear();
-        // for(int q=0;q<len;q++)
-        // {
-        //     BoundingBox bbox;
-        //     bbox.x = detections[q].x;
-        //     bbox.y = detections[q].y;
-        //     bbox.width = detections[q].width;
-        //     bbox.height = detections[q].height;
-        //     frame.detections.push_back(bbox);
+        for(int q=0;q<len;q++)
+        {
+            BoundingBox bbox;
+            bbox.x = detections[q].x;
+            bbox.y = detections[q].y;
+            bbox.width = detections[q].width;
+            bbox.height = detections[q].height;
+            frame.detections.push_back(bbox);
 
-        //     vector<uint16_t> histogram(512);
+            vector<uint16_t> histogram(512);
       
-        //     std::copy ( m_axi_feature+512*q, m_axi_feature+512*(q+1), histogram.begin() );
-        //     frame.histograms.push_back(histogram);
-        // }
+            std::copy ( m_axi_feature+512*q, m_axi_feature+512*(q+1), histogram.begin() );
+            frame.histograms.push_back(histogram);
+        }
         frameNo++;
         frame.setMask(detector.mask);
         frame.set_now();
         client.send(frame);
+        printf("c9\n");
 
         // outFile.close();
         auto end = std::chrono::high_resolution_clock::now();
