@@ -54,7 +54,7 @@ uint8_t * src;
 uint8_t * rgb_src; 
 uint8_t * dst; 
 
-uint16_t * m_axi_feature;
+uint16_t m_axi_feature[5120];
 uint16_t * m_axi_bound0;
 uint16_t * m_axi_feature0;
 uint16_t * m_axi_bound1;
