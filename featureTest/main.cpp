@@ -100,5 +100,37 @@ int main(int argc, char *argv[]) {
 
     printf("Feature done\n");
 
+    int index1 = 0;
+	int iterator = 0;
+
+	uint16_t featureHist[512];
+
+	for (int i = 0; i < IMG_H; i++) {
+		for (int j = 0; j < IMG_W; j++) {
+			for (int h = 0; h < 1; h++) {
+				if ((m_axi_bound0[0] <= i)
+						&& (m_axi_bound0[1] <= j)
+						&& (m_axi_bound0[2] >= i)
+						&& (m_axi_bound0[3] >= j)) {
+
+					index1 = h * 512 + 64 * (im.data[iterator + 2] >> 5) + 8 * (im.data[iterator + 1] >> 5) + (im.data[iterator + 0] >> 5);
+					//printf("Index i=%d, j=%d : %d\n",i,j,index1);
+					featureHist[index1] += 1;
+
+				}
+			}
+			iterator += 3;
+
+		}
+	}
+
+	for (int x = 0;x < 512; x++){
+		if (featureh[x] != featureHist[x]){
+			printf("Mismatch %d, expected : %d, actual : %d\n",x,featureHist[x],m_axi_feature0[x]);
+		}
+	}
+
+    
+
 	return 0;
 }
