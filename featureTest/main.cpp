@@ -28,7 +28,7 @@ int type;
 
 XFeature feature0;
 
-uint8_t rgb_src[76800*3];
+uint8_t * rgb_src;
 
 uint16_t * m_axi_feature0;
 uint16_t * m_axi_bound0;
