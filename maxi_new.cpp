@@ -229,7 +229,6 @@ int main(int argc, char *argv[]) {
     /***************************** Begin looping here *********************/
 //    auto begin = std::chrono::high_resolution_clock::now();
     bool isFirst = true;
-    bool isSecond = false;
     Mat img, grey;
 
     feature_config();
@@ -237,15 +236,9 @@ int main(int argc, char *argv[]) {
         // Queue the buffer
         //auto begin = std::chrono::high_resolution_clock::now();
 
-        if (isFirst){
-            backsub_config(true);
-            isFirst = false;
-            isSecond = true;
-        }
-        if (isSecond){
-            backsub_config(false);
-            isSecond = false;
-        }
+        backsub_config(isFirst);
+        if(isFirst) isFirst = false;
+        
 	auto begin = std::chrono::high_resolution_clock::now();
         cap>>img;
 	auto begin2 = std::chrono::high_resolution_clock::now();
