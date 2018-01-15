@@ -13,6 +13,9 @@
 #define RX_BASE_ADDR 0x12000000
 #define RGB_TX_BASE_ADDR 0x15000000
 
+#define AXILITE_RANGE 0xFFFF
+#define DDR_RANGE 0x01000000
+
 using namespace cv;
 using namespace std;
 
@@ -77,7 +80,7 @@ int main(int argc, char *argv[]) {
     m_axi_bound0 = (uint16_t*)mmap(NULL, 8,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_0);
     m_axi_feature0 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_0);
 
-	Mat im = imread("testim.jpg",CV_LOAD_IMAGE_GREY);
+	Mat im = imread("testim.jpg",IMREAD_GRAYSCALE);
 
 	memcpy(rgb_src, im.data, sizeof(uint8_t)*76800);
 
