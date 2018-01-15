@@ -105,6 +105,7 @@ void feature_config() {
     // XFeature_Set_bounding(&feature2,(u32)M_AXI_BOUNDING_2);
     // XFeature_Set_featureh(&feature2,(u32)M_AXI_FEATUREH_2);
     // }
+    printf("config end\n");
 }
 
 
@@ -170,7 +171,7 @@ int main(int argc, char *argv[]) {
 
     // Initialization communication link
     boost::asio::io_service io_service;
-    ClientUDP client(io_service,"10.0.0.200",8080);
+    ClientUDP client(io_service,"10.8.145.195",8080);
     uint16_t frameNo=0;
     const uint8_t cameraID = 0;
 
@@ -204,12 +205,12 @@ int main(int argc, char *argv[]) {
     // m_axi_feature2 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_2);
     printf("init begin\n");
 
-    if(backsub_init(&backsub)==0) {
-        printf("Backsub IP Core Initialized\n");
+    while(backsub_init(&backsub)!=0) {
+        printf("Backsub IP Core Initializing\n");
     }
 
-    if(feature_init(&feature0,0)==0) {
-        printf("Feature 0 IP Core Initialized\n");
+    while(feature_init(&feature0,0)!=0) {
+        printf("Feature 0 IP Core Initializing\n");
     }
     // if(feature_init(&feature1,1)==0) {
     //     printf("Feature 1 IP Core Initialized\n");
@@ -234,6 +235,7 @@ int main(int argc, char *argv[]) {
 
     feature_config();
     for (;;){
+        printf("loop begin\n");
         // Queue the buffer
         //auto begin = std::chrono::high_resolution_clock::now();
 
