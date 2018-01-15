@@ -96,10 +96,10 @@ int main(int argc, char *argv[]) {
     feature_config();
     uint16_t m_axi_bound0_sw[4];
 
-    m_axi_bound0_sw[0] = 64;
-    m_axi_bound0_sw[1] = 64;
-    m_axi_bound0_sw[2] = 128;
-    m_axi_bound0_sw[3] = 128;
+    m_axi_bound0_sw[0] = 0;
+    m_axi_bound0_sw[1] = 0;
+    m_axi_bound0_sw[2] = 100;
+    m_axi_bound0_sw[3] = 100;
 
     for (int y=0;y<512;y++){
 		m_axi_feature0[y] = 0;
