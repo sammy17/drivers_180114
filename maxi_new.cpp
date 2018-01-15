@@ -171,7 +171,7 @@ int main(int argc, char *argv[]) {
 
     // Initialization communication link
     boost::asio::io_service io_service;
-    ClientUDP client(io_service,"10.8.145.195",8080);
+    ClientUDP client(io_service,"10.10.21.49",8080);
     uint16_t frameNo=0;
     const uint8_t cameraID = 0;
 
@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    VideoCapture cap(0);
+    VideoCapture cap(argv[1]);
     cap.set(CV_CAP_PROP_FRAME_WIDTH,320);
     cap.set(CV_CAP_PROP_FRAME_HEIGHT,240);
     cap.set(CV_CAP_PROP_FPS,30);

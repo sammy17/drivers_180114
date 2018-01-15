@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/debian/drivers_180114/BacksubDriver_test
+CMAKE_SOURCE_DIR = /home/debian/drivers_180114/featureTest
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/debian/drivers_180114/BacksubDriver_test
+CMAKE_BINARY_DIR = /home/debian/drivers_180114/featureTest
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/debian/drivers_180114/BacksubDriver_test/CMakeFiles /home/debian/drivers_180114/BacksubDriver_test/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/debian/drivers_180114/featureTest/CMakeFiles /home/debian/drivers_180114/featureTest/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/debian/drivers_180114/BacksubDriver_test/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/debian/drivers_180114/featureTest/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -122,87 +122,6 @@ node: cmake_check_build_system
 node/fast:
 	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/build
 .PHONY : node/fast
-
-detection/BGSDetector.o: detection/BGSDetector.cpp.o
-
-.PHONY : detection/BGSDetector.o
-
-# target to build an object file
-detection/BGSDetector.cpp.o:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/detection/BGSDetector.cpp.o
-.PHONY : detection/BGSDetector.cpp.o
-
-detection/BGSDetector.i: detection/BGSDetector.cpp.i
-
-.PHONY : detection/BGSDetector.i
-
-# target to preprocess a source file
-detection/BGSDetector.cpp.i:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/detection/BGSDetector.cpp.i
-.PHONY : detection/BGSDetector.cpp.i
-
-detection/BGSDetector.s: detection/BGSDetector.cpp.s
-
-.PHONY : detection/BGSDetector.s
-
-# target to generate assembly for a file
-detection/BGSDetector.cpp.s:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/detection/BGSDetector.cpp.s
-.PHONY : detection/BGSDetector.cpp.s
-
-detection/Detector.o: detection/Detector.cpp.o
-
-.PHONY : detection/Detector.o
-
-# target to build an object file
-detection/Detector.cpp.o:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/detection/Detector.cpp.o
-.PHONY : detection/Detector.cpp.o
-
-detection/Detector.i: detection/Detector.cpp.i
-
-.PHONY : detection/Detector.i
-
-# target to preprocess a source file
-detection/Detector.cpp.i:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/detection/Detector.cpp.i
-.PHONY : detection/Detector.cpp.i
-
-detection/Detector.s: detection/Detector.cpp.s
-
-.PHONY : detection/Detector.s
-
-# target to generate assembly for a file
-detection/Detector.cpp.s:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/detection/Detector.cpp.s
-.PHONY : detection/Detector.cpp.s
-
-detection/NodeClient.o: detection/NodeClient.cpp.o
-
-.PHONY : detection/NodeClient.o
-
-# target to build an object file
-detection/NodeClient.cpp.o:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/detection/NodeClient.cpp.o
-.PHONY : detection/NodeClient.cpp.o
-
-detection/NodeClient.i: detection/NodeClient.cpp.i
-
-.PHONY : detection/NodeClient.i
-
-# target to preprocess a source file
-detection/NodeClient.cpp.i:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/detection/NodeClient.cpp.i
-.PHONY : detection/NodeClient.cpp.i
-
-detection/NodeClient.s: detection/NodeClient.cpp.s
-
-.PHONY : detection/NodeClient.s
-
-# target to generate assembly for a file
-detection/NodeClient.cpp.s:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/detection/NodeClient.cpp.s
-.PHONY : detection/NodeClient.cpp.s
 
 drivers/xbgsub.o: drivers/xbgsub.c.o
 
@@ -285,32 +204,113 @@ drivers/xbgsub_sinit.c.s:
 	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/drivers/xbgsub_sinit.c.s
 .PHONY : drivers/xbgsub_sinit.c.s
 
-maxi_cv.o: maxi_cv.cpp.o
+drivers/xfeature.o: drivers/xfeature.c.o
 
-.PHONY : maxi_cv.o
+.PHONY : drivers/xfeature.o
 
 # target to build an object file
-maxi_cv.cpp.o:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/maxi_cv.cpp.o
-.PHONY : maxi_cv.cpp.o
+drivers/xfeature.c.o:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/drivers/xfeature.c.o
+.PHONY : drivers/xfeature.c.o
 
-maxi_cv.i: maxi_cv.cpp.i
+drivers/xfeature.i: drivers/xfeature.c.i
 
-.PHONY : maxi_cv.i
+.PHONY : drivers/xfeature.i
 
 # target to preprocess a source file
-maxi_cv.cpp.i:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/maxi_cv.cpp.i
-.PHONY : maxi_cv.cpp.i
+drivers/xfeature.c.i:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/drivers/xfeature.c.i
+.PHONY : drivers/xfeature.c.i
 
-maxi_cv.s: maxi_cv.cpp.s
+drivers/xfeature.s: drivers/xfeature.c.s
 
-.PHONY : maxi_cv.s
+.PHONY : drivers/xfeature.s
 
 # target to generate assembly for a file
-maxi_cv.cpp.s:
-	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/maxi_cv.cpp.s
-.PHONY : maxi_cv.cpp.s
+drivers/xfeature.c.s:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/drivers/xfeature.c.s
+.PHONY : drivers/xfeature.c.s
+
+drivers/xfeature_linux.o: drivers/xfeature_linux.c.o
+
+.PHONY : drivers/xfeature_linux.o
+
+# target to build an object file
+drivers/xfeature_linux.c.o:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/drivers/xfeature_linux.c.o
+.PHONY : drivers/xfeature_linux.c.o
+
+drivers/xfeature_linux.i: drivers/xfeature_linux.c.i
+
+.PHONY : drivers/xfeature_linux.i
+
+# target to preprocess a source file
+drivers/xfeature_linux.c.i:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/drivers/xfeature_linux.c.i
+.PHONY : drivers/xfeature_linux.c.i
+
+drivers/xfeature_linux.s: drivers/xfeature_linux.c.s
+
+.PHONY : drivers/xfeature_linux.s
+
+# target to generate assembly for a file
+drivers/xfeature_linux.c.s:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/drivers/xfeature_linux.c.s
+.PHONY : drivers/xfeature_linux.c.s
+
+drivers/xfeature_sinit.o: drivers/xfeature_sinit.c.o
+
+.PHONY : drivers/xfeature_sinit.o
+
+# target to build an object file
+drivers/xfeature_sinit.c.o:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/drivers/xfeature_sinit.c.o
+.PHONY : drivers/xfeature_sinit.c.o
+
+drivers/xfeature_sinit.i: drivers/xfeature_sinit.c.i
+
+.PHONY : drivers/xfeature_sinit.i
+
+# target to preprocess a source file
+drivers/xfeature_sinit.c.i:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/drivers/xfeature_sinit.c.i
+.PHONY : drivers/xfeature_sinit.c.i
+
+drivers/xfeature_sinit.s: drivers/xfeature_sinit.c.s
+
+.PHONY : drivers/xfeature_sinit.s
+
+# target to generate assembly for a file
+drivers/xfeature_sinit.c.s:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/drivers/xfeature_sinit.c.s
+.PHONY : drivers/xfeature_sinit.c.s
+
+main.o: main.cpp.o
+
+.PHONY : main.o
+
+# target to build an object file
+main.cpp.o:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/main.cpp.o
+.PHONY : main.cpp.o
+
+main.i: main.cpp.i
+
+.PHONY : main.i
+
+# target to preprocess a source file
+main.cpp.i:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
+
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.cpp.s:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -321,15 +321,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... node"
-	@echo "... detection/BGSDetector.o"
-	@echo "... detection/BGSDetector.i"
-	@echo "... detection/BGSDetector.s"
-	@echo "... detection/Detector.o"
-	@echo "... detection/Detector.i"
-	@echo "... detection/Detector.s"
-	@echo "... detection/NodeClient.o"
-	@echo "... detection/NodeClient.i"
-	@echo "... detection/NodeClient.s"
 	@echo "... drivers/xbgsub.o"
 	@echo "... drivers/xbgsub.i"
 	@echo "... drivers/xbgsub.s"
@@ -339,9 +330,18 @@ help:
 	@echo "... drivers/xbgsub_sinit.o"
 	@echo "... drivers/xbgsub_sinit.i"
 	@echo "... drivers/xbgsub_sinit.s"
-	@echo "... maxi_cv.o"
-	@echo "... maxi_cv.i"
-	@echo "... maxi_cv.s"
+	@echo "... drivers/xfeature.o"
+	@echo "... drivers/xfeature.i"
+	@echo "... drivers/xfeature.s"
+	@echo "... drivers/xfeature_linux.o"
+	@echo "... drivers/xfeature_linux.i"
+	@echo "... drivers/xfeature_linux.s"
+	@echo "... drivers/xfeature_sinit.o"
+	@echo "... drivers/xfeature_sinit.i"
+	@echo "... drivers/xfeature_sinit.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 

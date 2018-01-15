@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    VideoCapture cap(0);
+    VideoCapture cap("/home/debian/output4.avi");
     cap.set(CV_CAP_PROP_FRAME_WIDTH,320);
     cap.set(CV_CAP_PROP_FRAME_HEIGHT,240);
     cap.set(CV_CAP_PROP_FPS,30);
