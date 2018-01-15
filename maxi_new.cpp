@@ -263,6 +263,7 @@ int main(int argc, char *argv[]) {
             int det =0;
             memset(m_axi_bound0_sw,0,8); // initialize bounds to 0
             memset(m_axi_feature, 0, 5120*2);
+            memset(m_axi_feature0, 0, 512*2);
             // memset(m_axi_bound1,0,8);
             // memset(m_axi_bound2,0,8);         
             auto end3 = std::chrono::high_resolution_clock::now();

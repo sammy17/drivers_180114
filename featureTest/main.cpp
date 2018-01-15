@@ -94,11 +94,12 @@ int main(int argc, char *argv[]) {
     }
 
     feature_config();
+    uint16_t m_axi_bound0_sw[4];
 
-    m_axi_bound0[0] = 64;
-    m_axi_bound0[1] = 64;
-    m_axi_bound0[2] = 128;
-    m_axi_bound0[3] = 128;
+    m_axi_bound0_sw[0] = 64;
+    m_axi_bound0_sw[1] = 64;
+    m_axi_bound0_sw[2] = 128;
+    m_axi_bound0_sw[3] = 128;
 
     for (int y=0;y<512;y++){
 		m_axi_feature0[y] = 0;
@@ -113,15 +114,15 @@ int main(int argc, char *argv[]) {
     int index1 = 0;
 	int iterator = 0;
 
-	
+	memcpy(m_axi_bound0,m_axi_bound0_sw,8);
 
 	for (int i = 0; i < IMG_H; i++) {
 		for (int j = 0; j < IMG_W; j++) {
 			for (int h = 0; h < 1; h++) {
-				if ((m_axi_bound0[0] <= i)
-						&& (m_axi_bound0[1] <= j)
-						&& (m_axi_bound0[2] >= i)
-						&& (m_axi_bound0[3] >= j)) {
+				if ((m_axi_bound0_sw[0] <= i)
+						&& (m_axi_bound0_sw[1] <= j)
+						&& (m_axi_bound0_sw[2] >= i)
+						&& (m_axi_bound0_sw[3] >= j)) {
 
 					index1 = h * 512 + 64 * (im.data[iterator + 2] >> 5) + 8 * (im.data[iterator + 1] >> 5) + (im.data[iterator + 0] >> 5);
 					//printf("Index i=%d, j=%d : %d\n",i,j,index1);
@@ -140,7 +141,13 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-    
+    feature_rel(&feature0);
+
+    munmap((void*)rgb_src, DDR_RANGE);
+    munmap((void*)m_axi_bound0, 8);
+    munmap((void*)m_axi_feature0, 512*2);
+
+    close(fdIP);
 
 	return 0;
 }
