@@ -1,6 +1,7 @@
 #include "drivers/xfeature.h"
 #include "include/xparameters.h"
 
+#include <opencv2/opencv.hpp>
 #include <chrono>
 #include <string.h>
 #include <fstream>
