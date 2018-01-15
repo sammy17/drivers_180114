@@ -252,7 +252,8 @@ int main(int argc, char *argv[]) {
         while(!XBgsub_IsDone(&backsub));
 
         auto end2 = std::chrono::high_resolution_clock::now();
-        Mat mask = Mat(240, 320, CV_8UC1, dst); 
+        Mat mask = Mat(240, 320, CV_8UC1); 
+        memcpy(mask.data,dst,76800);
 
         std::vector<cv::Rect> detections = detector.detect(mask);
             int len = detections.size();
