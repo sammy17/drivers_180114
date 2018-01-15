@@ -221,7 +221,7 @@ int main(int argc, char *argv[]) {
 
     
     BGSDetector detector(30,
-                          BGS_HW,
+                          BGS_MOVING_AVERAGE,
                           false,
                           "./pca_coeff.xml",
                           false);
@@ -348,7 +348,7 @@ int main(int argc, char *argv[]) {
             frame.histograms.push_back(histogram);
         }
         frameNo++;
-        frame.setMask(mask);
+        frame.setMask(detector.mask);
         frame.set_now();
         client.send(frame);
 
