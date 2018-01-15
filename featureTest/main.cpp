@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
     m_axi_bound0 = (uint16_t*)mmap(NULL, 8,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_0);
     m_axi_feature0 = (uint16_t*)mmap(NULL, 512*2,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_FEATUREH_0);
 
-	Mat im = imread("testim.jpg",IMREAD_COLOR);
+	Mat im = imread("testim.jpg",CV_LOAD_IMAGE_COLOR);
 
 	memcpy(rgb_src, im.data, sizeof(uint8_t)*76800*3);
 
