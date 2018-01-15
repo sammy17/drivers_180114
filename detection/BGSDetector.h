@@ -55,6 +55,7 @@ public:
     void trainDetector();
     int method;
     cv::Mat mask;
+    cv::Mat shape;
 
 private:
     void backgroundSubstraction(cv::Mat &frame0, cv::Mat &frame1, cv::Mat &frame2

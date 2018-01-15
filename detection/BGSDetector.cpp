@@ -62,7 +62,7 @@ std::vector<cv::Rect> BGSDetector::detect(cv::Mat &img)
 
     cv::findContours(maskPost, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
-    cv::Mat shape(mask.rows,mask.cols,CV_8UC1,Scalar(0));
+    shape = cv::Mat::zeros(mask.rows,mask.cols,CV_8UC1);
 
 
 

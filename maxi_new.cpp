@@ -14,6 +14,7 @@
 #include <csignal>
 
 #define RGB_TX_BASE_ADDR  0x30000000
+#define MASK_BASE_ADDR    0x30100000
 #define TX_BASE_ADDR      0x31000000
 #define RX_BASE_ADDR      0x31800000
 #define BG_MODEL          0x33000000
@@ -53,6 +54,7 @@ int type;
 uint8_t * src; 
 uint8_t * rgb_src; 
 uint8_t * dst; 
+uint8_t * mask_in;
 
 uint16_t m_axi_feature[5120];
 uint16_t * m_axi_bound0;
@@ -95,6 +97,7 @@ void feature_config() {
     XFeature_Set_frame_in(&feature0,(u32)RGB_TX_BASE_ADDR);
     XFeature_Set_bounding(&feature0,(u32)M_AXI_BOUNDING_0);
     XFeature_Set_featureh(&feature0,(u32)M_AXI_FEATUREH_0);
+    XFeature_Set_mask_in(&feature1,(u32)MASK_BASE_ADDR);
     // }
     // else if (n==1){
     // XFeature_Set_frame_in(&feature1,(u32)RGB_TX_BASE_ADDR);
@@ -191,7 +194,8 @@ int main(int argc, char *argv[]) {
 
     src = (uint8_t*)mmap(NULL, DDR_RANGE,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, TX_BASE_ADDR); 
     rgb_src = (uint8_t*)mmap(NULL, DDR_RANGE,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, RGB_TX_BASE_ADDR); 
-    dst = (uint8_t*)mmap(NULL, DDR_RANGE,PROT_EXEC|PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, RX_BASE_ADDR); 
+    dst = (uint8_t*)mmap(NULL, DDR_RANGE,PROT_EXEC|PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, RX_BASE_ADDR);
+    mask_in = (uint8_t*)mmap(NULL, 76800,PROT_EXEC|PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, MASK_BASE_ADDR);
 
 
     m_axi_bound0 = (uint16_t*)mmap(NULL, 8,PROT_READ|PROT_WRITE, MAP_SHARED, fdIP, M_AXI_BOUNDING_0);
@@ -264,6 +268,7 @@ int main(int argc, char *argv[]) {
             memset(m_axi_bound0_sw,0,8); // initialize bounds to 0
             memset(m_axi_feature, 0, 5120*2);
             memset(m_axi_feature0, 0, 512*2);
+            memcpy(mask_in, detector.shape.data, 76800);
             // memset(m_axi_bound1,0,8);
             // memset(m_axi_bound2,0,8);         
             auto end3 = std::chrono::high_resolution_clock::now();
