@@ -97,7 +97,7 @@ void feature_config() {
     XFeature_Set_frame_in(&feature0,(u32)RGB_TX_BASE_ADDR);
     XFeature_Set_bounding(&feature0,(u32)M_AXI_BOUNDING_0);
     XFeature_Set_featureh(&feature0,(u32)M_AXI_FEATUREH_0);
-    XFeature_Set_mask_in(&feature1,(u32)MASK_BASE_ADDR);
+    XFeature_Set_mask_in(&feature0,(u32)MASK_BASE_ADDR);
     // }
     // else if (n==1){
     // XFeature_Set_frame_in(&feature1,(u32)RGB_TX_BASE_ADDR);
