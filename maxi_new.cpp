@@ -267,14 +267,14 @@ int main(int argc, char *argv[]) {
             int det =0;
             memset(m_axi_bound0_sw,0,8); // initialize bounds to 0
             memset(m_axi_feature, 0, 5120*2);
-            memset(m_axi_feature0, 0, 512*2);
+            // memset(m_axi_feature0, 0, 512*2);
             memcpy(mask_in, detector.shape.data, 76800);
-            if(len>0){
-                for (int l=0;l<76800;l++){
-                    if(mask_in[l]!=0)
-                        printf("Index %d \n",l);
-                }
-            }
+            // if(len>0){
+            //     for (int l=0;l<76800;l++){
+            //         if(mask_in[l]!=0)
+            //             printf("Index %d \n",l);
+            //     }
+            // }
             // memset(m_axi_bound1,0,8);
             // memset(m_axi_bound2,0,8);         
             auto end3 = std::chrono::high_resolution_clock::now();
@@ -290,9 +290,10 @@ int main(int argc, char *argv[]) {
                     XFeature_Start(&feature0);
                     while(!XFeature_IsDone(&feature0));
                     memcpy(&m_axi_feature[512*det],m_axi_feature0,512*2);
-                    // for (int l=0;l<512;l++){
-                    //     printf("Index %d : %d\n",l,m_axi_feature0[l]);
-                    // }
+                    for (int l=0;l<512;l++){
+                        if(m_axi_feature0[l]>0)
+                            printf("Index %d : %d\n",l,m_axi_feature0[l]);
+                    }
                 }else {
                     break;
                 }
