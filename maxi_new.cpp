@@ -365,12 +365,12 @@ int main(int argc, char *argv[]) {
             vector<uint16_t> histogram(512);
       
             std::copy ( m_axi_feature+512*q, m_axi_feature+512*(q+1), histogram.begin() );
-            // frame.histograms.push_back(histogram);
+            frame.histograms.push_back(histogram);
             // for (int l=0;l<512;l++){
             //     if(m_axi_feature[512*q+l]!=detector.histograms[q].at<unsigned short>(l))
             //         printf("Mismatch : %d, expected : %d, actual : %d\n",l,detector.histograms[q].at<unsigned short>(l),m_axi_feature[512*q+l]);
             // }
-            frame.histograms.push_back(detector.histograms[q]);
+            // frame.histograms.push_back(detector.histograms[q]);
         }
         frameNo++;
         frame.setMask(detector.mask);
