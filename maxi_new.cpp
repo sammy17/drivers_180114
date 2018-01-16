@@ -269,9 +269,11 @@ int main(int argc, char *argv[]) {
             memset(m_axi_feature, 0, 5120*2);
             memset(m_axi_feature0, 0, 512*2);
             memcpy(mask_in, detector.shape.data, 76800);
-            for (int l=0;l<76800;l++){
-                if(mask_in[l]==0)
-                    printf("Index %d \n",l);
+            if(len>0){
+                for (int l=0;l<76800;l++){
+                    if(mask_in[l]==0)
+                        printf("Index %d \n",l);
+                }
             }
             // memset(m_axi_bound1,0,8);
             // memset(m_axi_bound2,0,8);         
