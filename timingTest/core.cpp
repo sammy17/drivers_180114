@@ -11,6 +11,8 @@ const data_t sk0 = w0/(defaultNoiseSigma*2);
 const data_t var0 = defaultNoiseSigma*defaultNoiseSigma*4;
 const data_t minVar = defaultNoiseSigma*defaultNoiseSigma;
 
+#define K 2
+
 
 void process(uint8_t frame_in[IMG_SIZE/PARTS],
              uint8_t frame_out[IMG_SIZE/PARTS],

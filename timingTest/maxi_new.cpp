@@ -219,16 +219,19 @@ int main(int argc, char *argv[]) {
 }
 
     Mat img0, gray0, imout0;
+    uint8_t frame_in[76800];
+    uint8_t frame_ou[76800];
 
     for(int j=0;j<frame_count;j++){
         cap>>img0;
         auto end4 = std::chrono::high_resolution_clock::now();
         if(!img0.data) break;
         cv::cvtColor(img0, gray0, CV_BGR2GRAY);
+        memcpy(frame_in, gray0.data, 76800);
         if (j==0)
-            bgsub(gray0.data,imout0,true, bgmodel);
+            bgsub(frame_in,frame_ou,true, bgmodel);
         else
-            bgsub(gray0.data,imout0,false, bgmodel);
+            bgsub(frame_in,frame_ou,false, bgmodel);
         auto end = std::chrono::high_resolution_clock::now();
 
         totalTime_sw += std::chrono::duration_cast<std::chrono::microseconds>(end-end4).count();
