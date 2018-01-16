@@ -280,12 +280,13 @@ int main(int argc, char *argv[]) {
                     m_axi_bound0_sw[3] = detections.at(det).y + detections.at(det).height;
                     memcpy(m_axi_bound0, m_axi_bound0_sw, 8);
                     det++;
+                    printf("Bounds : %d, %d, %d, %d\n",m_axi_bound0[0],m_axi_bound0[1],m_axi_bound0[2],m_axi_bound0[3]);
                     XFeature_Start(&feature0);
                     while(!XFeature_IsDone(&feature0));
                     memcpy(&m_axi_feature[512*det],m_axi_feature0,512*2);
-                    for (int l=0;l<512;l++){
-                        printf("Index %d : %d\n",l,m_axi_feature0[l]);
-                    }
+                    // for (int l=0;l<512;l++){
+                    //     printf("Index %d : %d\n",l,m_axi_feature0[l]);
+                    // }
                 }else {
                     break;
                 }
