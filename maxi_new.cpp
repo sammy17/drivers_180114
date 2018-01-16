@@ -235,8 +235,8 @@ int main(int argc, char *argv[]) {
     bool isFirst = true;
     Mat img, grey;
 
-    // memset(m_axi_bound0_sw,0,8); // initialize bounds to 0
-    // memset(m_axi_feature, 0, 5120*2);
+    memset(m_axi_bound0_sw,0,8); // initialize bounds to 0
+    memset(m_axi_feature, 0, 5120*2);
     feature_config();
     for (;;){
         // Queue the buffer
@@ -290,9 +290,9 @@ int main(int argc, char *argv[]) {
                     // printf("Bounds : %d, %d, %d, %d\n",m_axi_bound0[0],m_axi_bound0[1],m_axi_bound0[2],m_axi_bound0[3]);
                     XFeature_Start(&feature0);
                     while(!XFeature_IsDone(&feature0));
-                    // memcpy(&m_axi_feature[512*det],m_axi_feature0,512*2);
-                    m_axi_feature0[0] = 12;
-                    m_axi_feature0[7] = 1243;
+                    memcpy(&m_axi_feature[512*det],m_axi_feature0,512*2);
+                    // m_axi_feature0[0] = 12;
+                    // m_axi_feature0[7] = 1243;
                     for (int l=0;l<512;l++){
                         if(m_axi_feature0[l]!=detector.histograms[det].at<unsigned short>(l))
                             printf("Mismatch : %d, expected : %d, actual : %d\n",l,detector.histograms[det].at<unsigned short>(l),m_axi_feature0[l]);
