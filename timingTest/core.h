@@ -1,32 +1,24 @@
 #include <iostream>
 #include <cmath>
 #include <cfloat>
-#include <ap_int.h>
-#include <hls_math.h>
 #include <string.h>
 
 
 using namespace std;
 
-#define WIDTH 320*2
-#define HEIGHT 240*2
+#define WIDTH 320
+#define HEIGHT 240
 #define IMG_SIZE WIDTH*HEIGHT
 #define K  2 // no of gaussian mxitures
 #define BGM_SIZE IMG_SIZE*K
-#define PARTS 60
+#define PARTS 120
 typedef float data_t;
 //typedef ap_fixed<32,16> data_t;
 
 
 
 
-struct MixData
-{
-	data_t sortKey;
-	data_t weight;
-	data_t mean;
-	data_t var;
-};
+
 
 
 
