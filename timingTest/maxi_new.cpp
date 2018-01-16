@@ -225,8 +225,10 @@ int main(int argc, char *argv[]) {
         auto end4 = std::chrono::high_resolution_clock::now();
         if(!img0.data) break;
         cv::cvtColor(img0, gray0, CV_BGR2GRAY);
-
-        bgsub(gray0.data,imout0,init, bgmodel);
+        if (j==0)
+            bgsub(gray0.data,imout0,true, bgmodel);
+        else
+            bgsub(gray0.data,imout0,false, bgmodel);
         auto end = std::chrono::high_resolution_clock::now();
 
         totalTime_sw += std::chrono::duration_cast<std::chrono::microseconds>(end-end4).count();
