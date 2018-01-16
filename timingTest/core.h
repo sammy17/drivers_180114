@@ -9,7 +9,7 @@ using namespace std;
 #define WIDTH 320
 #define HEIGHT 240
 #define IMG_SIZE WIDTH*HEIGHT
-#define BGM_SIZE IMG_SIZE*K
+#define BGM_SIZE IMG_SIZE*2
 #define PARTS 120
 typedef float data_t;
 
