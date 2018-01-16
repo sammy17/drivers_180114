@@ -39,6 +39,7 @@ int fdIP;
 int fd; // A file descriptor to the video device
 int type;
 // uint8_t * ybuffer = new uint8_t[N];
+float bgmodel[76800*2];
 
 uint8_t * src; 
 uint8_t * dst; 
@@ -223,7 +224,7 @@ int main(int argc, char *argv[]) {
         cap>>img0;
         auto end4 = std::chrono::high_resolution_clock::now();
         if(!img0.data) break;
-        cv::cvtColor(img0, grey0, CV_BGR2GRAY);
+        cv::cvtColor(img0, gray0, CV_BGR2GRAY);
 
         bgsub(gray0.data,imout0,init, bgmodel);
         auto end = std::chrono::high_resolution_clock::now();
