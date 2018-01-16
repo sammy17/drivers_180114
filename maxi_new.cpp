@@ -271,7 +271,7 @@ int main(int argc, char *argv[]) {
             memcpy(mask_in, detector.shape.data, 76800);
             if(len>0){
                 for (int l=0;l<76800;l++){
-                    if(mask_in[l]==0)
+                    if(mask_in[l]!=0)
                         printf("Index %d \n",l);
                 }
             }
