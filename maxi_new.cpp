@@ -235,6 +235,8 @@ int main(int argc, char *argv[]) {
     bool isFirst = true;
     Mat img, grey;
 
+    memset(m_axi_bound0_sw,0,8); // initialize bounds to 0
+    memset(m_axi_feature, 0, 5120*2);
     feature_config();
     for (;;){
         // Queue the buffer
@@ -265,8 +267,7 @@ int main(int argc, char *argv[]) {
                 len = 10;
             }
             int det =0;
-            memset(m_axi_bound0_sw,0,8); // initialize bounds to 0
-            memset(m_axi_feature, 0, 5120*2);
+            
             // memset(m_axi_feature0, 0, 512*2);
             memcpy(mask_in, detector.shape.data, 76800);
             // if(len>0){
