@@ -343,10 +343,14 @@ int main(int argc, char *argv[]) {
             bbox.height = detections[q].height;
             frame.detections.push_back(bbox);
 
-            // vector<uint16_t> histogram(512);
+            vector<uint16_t> histogram(512);
       
-            // std::copy ( m_axi_feature+512*q, m_axi_feature+512*(q+1), histogram.begin() );
+            std::copy ( m_axi_feature+512*q, m_axi_feature+512*(q+1), histogram.begin() );
             // frame.histograms.push_back(histogram);
+            for (int l=0;l<512;l++){
+                if(m_axi_feature[512*q+l]!=detector.histograms[q][l])
+                    printf("Mismatch : %d, expected : %d, actual : %d\n",l,detector.histograms[q][l],m_axi_feature[512*q+l])
+            }
             frame.histograms.push_back(detector.histograms[q]);
         }
         frameNo++;
