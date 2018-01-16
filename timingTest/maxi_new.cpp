@@ -218,6 +218,8 @@ int main(int argc, char *argv[]) {
     
 }
 
+    printf("Elapsed time for hardware implementation : %lld us\n",(totalTime_hw)/frame_count);
+
     Mat img0, gray0, imout0;
     uint8_t frame_in[76800];
     uint8_t frame_ou[76800];
@@ -237,9 +239,9 @@ int main(int argc, char *argv[]) {
         totalTime_sw += std::chrono::duration_cast<std::chrono::microseconds>(end-end4).count();
     }
 
-    printf("Elapsed time for hardware implementation : %lld us\n",(totalTime_hw)/frame_count);
+    // printf("Elapsed time for hardware implementation : %lld us\n",(totalTime_hw)/frame_count);
 
-    printf("Elapsed time for software implementation : %lld us\n",(totalTime_hw)/frame_count);
+    printf("Elapsed time for software implementation : %lld us\n",(totalTime_sw)/frame_count);
 
 
     //Release IP Core
