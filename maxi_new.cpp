@@ -291,6 +291,8 @@ int main(int argc, char *argv[]) {
                     XFeature_Start(&feature0);
                     while(!XFeature_IsDone(&feature0));
                     // memcpy(&m_axi_feature[512*det],m_axi_feature0,512*2);
+                    m_axi_feature0[0] = 12;
+                    m_axi_feature0[7] = 1243;
                     for (int l=0;l<512;l++){
                         if(m_axi_feature0[l]!=detector.histograms[det].at<unsigned short>(l))
                             printf("Mismatch : %d, expected : %d, actual : %d\n",l,detector.histograms[det].at<unsigned short>(l),m_axi_feature0[l]);
