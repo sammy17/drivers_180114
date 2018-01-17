@@ -225,7 +225,7 @@ int main(int argc, char *argv[]) {
     uint8_t frame_ou[76800];
 
     for(int j=0;j<frame_count;j++){
-        cap>>img0;
+        cap0>>img0;
         auto end4 = std::chrono::high_resolution_clock::now();
         if(!img0.data) break;
         cv::cvtColor(img0, gray0, CV_BGR2GRAY);
